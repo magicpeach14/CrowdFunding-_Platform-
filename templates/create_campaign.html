@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+          <h3>Create Campaign</h3>
+        </div>
+        <div class="card-body">
+          <form method="POST" action="{{ url_for('create_campaign') }}" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="title">Campaign Title</label>
+              <input type="text" name="title" class="form-control" placeholder="Enter campaign title" required>
+            </div>
+            <div class="form-group">
+              <label for="description">Campaign Description</label>
+              <textarea name="description" class="form-control" rows="4" placeholder="Enter campaign description" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="target_amount">Target Amount</label>
+              <input type="number" step="0.01" name="target_amount" class="form-control" placeholder="Enter target amount" required>
+            </div>
+            <div class="form-group">
+              <label for="image">Campaign Image (optional)</label>
+              <input type="file" name="image" class="form-control-file">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Create Campaign</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

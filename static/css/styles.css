@@ -1,0 +1,201 @@
+
+body {
+  /* A dynamic animated gradient background using vibrant colors */
+  background: linear-gradient(45deg, #a18cd1, #fbc2eb, #f6d365, #fda085,#641ceb,#641ceb,#641ceb);
+  animation: gradientBG 8s ease infinite;
+  background-size: 400% 400%;
+  color: #333;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Links */
+a, a:hover {
+  color: #8A2BE2;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+/* Make all fonts bold and stylish */
+body, h1, h2, h3, h4, h5, h6, button {
+  font-family: 'Roboto', sans-serif; /* Change to your preferred font if needed */
+  font-weight: 700 !important;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+/* Stylish Brand Text */
+.navbar-brand {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 2rem;
+  background: linear-gradient(45deg, #8A2BE2, #7A1FDA);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: scale(1.05);
+}
+
+
+
+/* Navbar */
+.navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #ddd;
+  padding: 0.75rem 1rem;
+  transition: background-color 0.3s ease;
+}
+/* Navigation Button Styling */
+/* Navigation Button Styling */
+.navbar-nav .nav-link {
+  font-family: 'Roboto', sans-serif; /* You may switch to another stylish font if desired */
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #8A2BE2 !important;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  padding: 0.75rem 1.25rem;
+  border-radius: 50px;
+  margin-left: 10px;
+}
+
+.navbar-nav .nav-link:hover {
+  background-color: #8A2BE2;
+  color: #ffffff !important;
+  text-decoration: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Container */
+.container {
+  margin-top: 30px;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #8A2BE2;
+  border-color: #7A1FDA;
+  color: #fff;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.btn-primary:hover {
+  background-color: #7A1FDA;
+  border-color: #6911B7;
+  cursor: pointer;
+}
+
+/* Cards */
+.card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+/* Forms */
+.form-control {
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.form-control:focus {
+  border-color: #8A2BE2;
+  box-shadow: 0 0 5px rgba(138, 43, 226, 0.5);
+}
+
+/* Alerts */
+.alert {
+  border-radius: 4px;
+}
+
+/* Blockchain Timeline Card */
+.block-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+.block-card h4 {
+  color: #8A2BE2;
+  margin-top: 0;
+}
+.block-card .timestamp {
+  font-size: 0.9em;
+  color: #666;
+}
+.block-card .hash,
+.block-card .prev-hash {
+  font-family: monospace;
+  font-size: 0.85em;
+  color: #333;
+  word-break: break-all;
+}
+
+/* Timeline Styles */
+.timeline {
+  position: relative;
+  margin: 20px 0;
+  padding: 0;
+  list-style: none;
+}
+.timeline:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50px;
+  width: 4px;
+  background: #8A2BE2;
+}
+.timeline-item {
+  position: relative;
+  margin: 20px 0;
+  padding-left: 80px;
+  transition: transform 0.3s ease;
+}
+.timeline-item:hover {
+  transform: translateX(5px);
+}
+.timeline-item:before {
+  content: '';
+  position: absolute;
+  left: 36px;
+  background: #8A2BE2;
+  border-radius: 50%;
+  height: 28px;
+  width: 28px;
+  top: 0;
+}
+
+/* Image Styling */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}

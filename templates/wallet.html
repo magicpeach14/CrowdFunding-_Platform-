@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2>My Wallet</h2>
+  <p>Current Balance: ${{ wallet_balance }}</p>
+  <a href="{{ url_for('topup') }}">Top Up Wallet</a>
+{% endblock %}

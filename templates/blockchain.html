@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4">Donation Blockchain</h2>
+<ul class="timeline">
+  {% for block in donation_blocks %}
+    <li class="timeline-item">
+      <div class="block-card">
+        <h4>Block {{ block.index }}</h4>
+        <p class="timestamp">Timestamp: {{ block.timestamp }}</p>
+        <p><strong>Hash:</strong> <span class="hash">{{ block.hash }}</span></p>
+        <p><strong>Previous Hash:</strong> <span class="prev-hash">{{ block.previous_hash }}</span></p>
+        <p><strong>Nonce:</strong> {{ block.nonce }}</p>
+        <hr>
+        <h5>Transactions:</h5>
+        {% if block.tx_list and block.tx_list|length > 0 %}
+          <ul>
+            {% for tx in block.tx_list %}
+              <li>
+                <strong>Tx ID:</strong> {{ tx.transaction_id }} |
+                <strong>Donor:</strong> {{ tx.donor }} |
+                <strong>Donee:</strong> {{ tx.donee }} |
+                <strong>Campaign:</strong> {{ tx.campaign }} |
+                <strong>Amount:</strong> {{ tx.amount }}
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No transactions in this block.</p>
+        {% endif %}
+      </div>
+    </li>
+  {% endfor %}
+</ul>
+
+<h2 class="mt-5 mb-4">Wallet Blockchain</h2>
+<ul class="timeline">
+  {% for block in wallet_blocks %}
+    <li class="timeline-item">
+      <div class="block-card">
+        <h4>Block {{ block.index }}</h4>
+        <p class="timestamp">Timestamp: {{ block.timestamp }}</p>
+        <p><strong>Hash:</strong> <span class="hash">{{ block.hash }}</span></p>
+        <p><strong>Previous Hash:</strong> <span class="prev-hash">{{ block.previous_hash }}</span></p>
+        <p><strong>Nonce:</strong> {{ block.nonce }}</p>
+        <hr>
+        <h5>Wallet Top-Up Details:</h5>
+        {% if block.tx_list.wallet_topup is defined %}
+          <ul>
+            <li>
+              <strong>User ID:</strong> {{ block.tx_list.wallet_topup.user_id }} |
+              <strong>Username:</strong> {{ block.tx_list.wallet_topup.username }} |
+              <strong>Amount:</strong> {{ block.tx_list.wallet_topup.amount }} |
+              <strong>Timestamp:</strong> {{ block.tx_list.wallet_topup.timestamp }}
+            </li>
+          </ul>
+        {% else %}
+          <p>No wallet top-up data in this block.</p>
+        {% endif %}
+      </div>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}

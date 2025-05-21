@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <!-- Campaign Detail Card -->
+  <div class="card mb-4 shadow-sm">
+    {% if campaign.image_file %}
+      <img src="{{ url_for('static', filename='uploads/' ~ campaign.image_file) }}" alt="Campaign Image" class="card-img-top" style="height: 300px; object-fit: cover;">
+    {% else %}
+      <img src="{{ url_for('static', filename='uploads/default.jpg') }}" alt="Default Campaign Image" class="card-img-top" style="height: 300px; object-fit: cover;">
+    {% endif %}
+    <div class="card-body">
+      <h2 class="card-title">{{ campaign.title }}</h2>
+      <p class="card-text">{{ campaign.description }}</p>
+      <p><strong>Target Amount:</strong> Rs{{ campaign.target_amount }}</p>
+      <p><strong>Collected Amount:</strong> Rs{{ campaign.collected_amount }}</p>
+      <!-- Progress Bar -->
+      {% set percent = (campaign.collected_amount / campaign.target_amount * 100) if campaign.target_amount > 0 else 0 %}
+      <div class="progress mb-3">
+        <div class="progress-bar bg-primary" role="progressbar" style="width: {{ percent|round(0, 'ceil') }}%;" aria-valuenow="{{ percent|round(0, 'ceil') }}" aria-valuemin="0" aria-valuemax="100">
+          {{ percent|round(0, 'ceil') }}%
+        </div>
+      </div>
+      <p><strong>Created by:</strong> {{ campaign.donee.username }}</p>
+    </div>
+    {% if current_user.is_authenticated and current_user.role == 'donor' %}
+    <div class="card-footer">
+      <h4>Make a Donation</h4>
+      <form method="POST" action="{{ url_for('campaign_detail', campaign_id=campaign.id) }}">
+        <div class="form-group">
+          <label for="amount">Donation Amount</label>
+          <input type="number" step="0.01" class="form-control" name="amount" placeholder="Enter donation amount" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Donate</button>
+      </form>
+    </div>
+    {% else %}
+    <div class="card-footer">
+      <p>You must be logged in as a donor to make a donation.</p>
+    </div>
+    {% endif %}
+  </div>
+  
+  <!-- Donation Progress Donut Chart Card -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header">
+      <h4>Donation Progress</h4>
+    </div>
+    <div class="card-body" style="position: relative; height: 300px;">
+      <canvas id="progressChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Donations List Card -->
+  <div class="card shadow-sm">
+    <div class="card-header">
+      <h4>Donations</h4>
+    </div>
+    <div class="card-body">
+      {% if campaign.transactions %}
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Donor</th>
+            <th>Amount</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tx in campaign.transactions %}
+          <tr>
+            <td>{{ tx.id }}</td>
+            <td>{{ tx.sender.username }}</td>
+            <td>Rs{{ tx.amount }}</td>
+            <td>{{ tx.timestamp }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>No donations yet.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Setup variables from the campaign context
+  var ctx = document.getElementById('progressChart').getContext('2d');
+  var target = {{ campaign.target_amount }};
+  var collected = {{ campaign.collected_amount }};
+  var remaining = target - collected;
+  if(remaining < 0) { remaining = 0; }
+  
+  // Create a doughnut chart
+  var progressChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+          labels: ['Collected', 'Remaining'],
+          datasets: [{
+              data: [collected, remaining],
+              backgroundColor: ['#8A2BE2', '#e0e0e0'],
+              borderWidth: 2,
+              borderColor: '#fff'
+          }]
+      },
+      options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutoutPercentage: 60,
+          legend: {
+              position: 'bottom',
+              labels: {
+                  fontFamily: 'Roboto',
+                  fontStyle: 'bold'
+              }
+          },
+          tooltips: {
+              callbacks: {
+                  label: function(tooltipItem, data) {
+                      var dataset = data.datasets[tooltipItem.datasetIndex];
+                      var index = tooltipItem.index;
+                      return data.labels[index] + ': Rs' + dataset.data[index];
+                  }
+              }
+          }
+      }
+  });
+</script>
+{% endblock %}

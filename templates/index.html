@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5 text-white">
+  <!-- Hero Section -->
+  <div class="hero-section text-center py-5 mb-5" style="background: linear-gradient(135deg, #8A2BE2, #7A1FDA); border-radius: 10px;">
+    <div class="container">
+      <h1 class="display-3">Welcome to Funding Platform</h1>
+      <p class="lead">Empowering innovation and transparency through decentralized crowdfunding.</p>
+      {% if not current_user.is_authenticated %}
+        <a class="btn btn-light btn-lg mt-3" href="{{ url_for('register') }}">Get Started</a>
+      {% else %}
+        <a class="btn btn-light btn-lg mt-3" href="{{ url_for('dashboard') }}">Go to Dashboard</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Featured Campaigns Section -->
+  <div class="mb-5">
+    <h2 class="text-center mb-4">Featured Campaigns</h2>
+    <div class="row">
+      {% for campaign in campaigns %}
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm" style="background: rgba(0,0,0,0.3);">
+          <img src="{{ url_for('static', filename='uploads/' + campaign.image_file) }}" class="card-img-top" alt="{{ campaign.title }}" style="height:200px; object-fit:cover;">
+          <div class="card-body">
+            <h5 class="card-title">{{ campaign.title }}</h5>
+            <p class="card-text">{{ campaign.description|truncate(100) }}</p>
+            {% set percent = (campaign.collected_amount / campaign.target_amount * 100) if campaign.target_amount > 0 else 0 %}
+            <div class="progress mb-3">
+              <div class="progress-bar bg-primary" role="progressbar" style="width: {{ percent|round(0, 'ceil') }}%;" aria-valuenow="{{ percent|round(0, 'ceil') }}" aria-valuemin="0" aria-valuemax="100">
+                {{ percent|round(0, 'ceil') }}%
+              </div>
+            </div>
+            <a href="{{ url_for('campaign_detail', campaign_id=campaign.id) }}" class="btn btn-light btn-block">View Details</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Latest Donations Section -->
+  <div class="mb-5">
+    <h2 class="text-center mb-4">Latest Donations</h2>
+    <div class="card shadow-sm" style="background: rgba(0,0,0,0.3);">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Recent Donations</h5>
+      </div>
+      <div class="card-body">
+        <ul class="list-group">
+          {% for donation in latest_donations %}
+          <li class="list-group-item d-flex justify-content-between align-items-center" style="background: transparent; border: none;">
+            <div>
+              <strong>{{ donation.sender.username }}</strong> donated <span class="text-success">Rs{{ donation.amount }}</span>
+              {% if donation.campaign %}
+                <br><small class="text-white">to {{ donation.campaign.title }}</small>
+              {% endif %}
+            </div>
+            <small class="text-white">{{ donation.timestamp.strftime('%Y-%m-%d %H:%M') }}</small>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overall Campaign Progress Graph -->
+  <div class="mb-5">
+    <h2 class="text-center mb-4">Overall Campaign Progress</h2>
+    <div class="card shadow-sm" style="background: rgba(0,0,0,0.3);">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Collected Amount per Campaign</h5>
+      </div>
+      <div class="card-body" style="position: relative; height: 400px;">
+        <canvas id="overallCampaignChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js CDN (v3) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Global Chart.js Defaults for white text
+  Chart.defaults.font.family = 'Roboto';
+  Chart.defaults.font.size = 14;
+  Chart.defaults.font.color = '#ffffff';
+
+  // Overall Campaign Progress: Bar Chart
+  const ctx = document.getElementById('overallCampaignChart').getContext('2d');
+  const overallCampaignChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: [{% for campaign in campaigns %}"{{ campaign.title }}"{% if not loop.last %}, {% endif %}{% endfor %}],
+          datasets: [{
+              label: 'Collected Amount (Rs)',
+              data: [{% for campaign in campaigns %}{{ campaign.collected_amount }}{% if not loop.last %}, {% endif %}{% endfor %}],
+              backgroundColor: 'rgba(138, 43, 226, 0.7)',
+              borderColor: '#ffffff',
+              borderWidth: 1
+          }]
+      },
+      options: {
+          responsive: true,
+          scales: {
+              y: {
+                  beginAtZero: true,
+                  ticks: {
+                      color: '#ffffff'
+                  },
+                  grid: {
+                      color: 'rgba(255,255,255,0.2)'
+                  }
+              },
+              x: {
+                  ticks: {
+                      color: '#ffffff'
+                  },
+                  grid: {
+                      color: 'rgba(255,255,255,0.2)'
+                  }
+              }
+          },
+          plugins: {
+              legend: {
+                  labels: {
+                      color: '#ffffff'
+                  },
+                  position: 'bottom'
+              }
+          }
+      }
+  });
+</script>
+{% endblock %}
