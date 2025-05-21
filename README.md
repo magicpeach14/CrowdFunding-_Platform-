@@ -3,9 +3,9 @@
  This project is a crowdfunding platfrom which is developed by using  hybrid blockchain technology.The main purpose of this platform is which is useful for raising funds for the projects from the global community.This platform is mainly useful for kickstarters,entrepreneur,funding  etc..the platform using both public and private blockchains. public blockchain is used for donations and private blockchain for wallet 
  # Installation-
  To run the project:
- Download the latest version of python https://www.python.org/downloads/release/python-3117/
- create the folder C:\Users\HP\OneDrive\Desktop\TrustCrowdFundingAp
- open command prompt and set the  file path
+ 1.Download the latest version of python https://www.python.org/downloads/release/python-3117/.
+ 2.create the folder C:\Users\HP\OneDrive\Desktop\TrustCrowdFundingAp.
+ 3.open command prompt and set the  file path
  enter the commands:
     env\Scripts\activate
     py app.py
