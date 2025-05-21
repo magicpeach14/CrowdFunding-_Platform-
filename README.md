@@ -1,5 +1,5 @@
 # CrowdFunding-_Platform-
-Trust and fraud prevention: A blockchain based crowdfunding platform 
+# Trust and fraud prevention: A blockchain based crowdfunding platform 
  This project is a crowdfunding platfrom which is developed by using  hybrid blockchain technology.The main purpose of this platform is which is useful for raising funds for the projects from the global community.This platform is mainly useful for kickstarters,entrepreneur,funding  etc..the platform using both public and private blockchains. public blockchain is used for donations and private blockchain for wallet 
  # Installation-
  To run the project:
